@@ -6,8 +6,11 @@ import java.util.Scanner;
 public class JogoBatalhaNaval {
     private char[][] tabuleiroNavios;
     private char[][] tabuleiroVisivel;
+    private char[][] tabuleiroNaviosBot;
+    private char[][] tabuleiroVisivelBot;
     private Scanner scanner;
     private int naviosRestantes;
+    private int naviosRestantesBot;
     private int naviosAfundadosJogador;
     private int naviosAfundadosBot;
     private String nomeJogador;
@@ -21,6 +24,8 @@ public class JogoBatalhaNaval {
 
         tabuleiroNavios = new char[8][8]; // Tamanho padrão do tabuleiro
         tabuleiroVisivel = new char[8][8];
+        tabuleiroNaviosBot = new char[8][8]; // Tamanho padrão do tabuleiro
+        tabuleiroVisivelBot = new char[8][8];
         scanner = new Scanner(System.in);
         naviosRestantes = 0;
         naviosAfundadosJogador = 0;
@@ -30,14 +35,29 @@ public class JogoBatalhaNaval {
 
         inicializarTabuleiros();
         colocarNavios(tabuleiroNavios, quantidadeNavios);
+        inicializarTabuleirosBot();
+        colocarNaviosBot(tabuleiroNaviosBot, quantidadeNavios);
     }
+
+
 
     private void inicializarTabuleiros() {
         inicializarTabuleiro(tabuleiroNavios);
         inicializarTabuleiro(tabuleiroVisivel);
     }
+    private void inicializarTabuleirosBot() {
+        inicializarTabuleiroBot(tabuleiroNaviosBot);
+        inicializarTabuleiroBot(tabuleiroVisivelBot);
+    }
 
     private void inicializarTabuleiro(char[][] tabuleiro) {
+        for (int i = 0; i < tabuleiro.length; i++) {
+            for (int j = 0; j < tabuleiro[i].length; j++) {
+                tabuleiro[i][j] = '~';
+            }
+        }
+    }
+    private void inicializarTabuleiroBot(char[][] tabuleiro) {
         for (int i = 0; i < tabuleiro.length; i++) {
             for (int j = 0; j < tabuleiro[i].length; j++) {
                 tabuleiro[i][j] = '~';
@@ -59,7 +79,8 @@ public class JogoBatalhaNaval {
                 // Mostra apenas água e tiros, sem revelar a posição dos navios
                 if (tabuleiro[i][j] == '~' || tabuleiro[i][j] == 'X' || tabuleiro[i][j] == 'O') {
                     System.out.print(tabuleiro[i][j] + " ");
-                } else {
+                }
+                else {
                     System.out.print("~ "); // Esconde a posição dos navios
                 }
             }
@@ -85,7 +106,35 @@ public class JogoBatalhaNaval {
             for (int j = 0; j < 3; j++) {
                 if (direcao == 'V') {
                     tabuleiro[linha + j][coluna] = 'N';
-                } else {
+                }
+                else {
+                    tabuleiro[linha][coluna + j] = 'N';
+                }
+            }
+
+            // Incrementa naviosRestantes (se existir)
+            naviosRestantes += 3; // Cada navio agora tem 3 blocos
+        }
+    }
+    private void colocarNaviosBot(char[][] tabuleiro, int quantidadeNavios) {
+        for (int i = 0; i < quantidadeNavios; i++) {
+            int linha, coluna;
+            char direcao;
+
+            // Gere aleatoriamente a direção do navio (V para vertical, H para horizontal)
+            direcao = (Math.random() < 0.5) ? 'V' : 'H';
+
+            do {
+                linha = (int) (Math.random() * tabuleiro.length);
+                coluna = (int) (Math.random() * tabuleiro[0].length);
+            } while (!podeColocarNavio(tabuleiro, linha, coluna, direcao));
+
+            // Coloque o navio no tabuleiro com base na direção
+            for (int j = 0; j < 3; j++) {
+                if (direcao == 'V') {
+                    tabuleiro[linha + j][coluna] = 'N';
+                }
+                else {
                     tabuleiro[linha][coluna + j] = 'N';
                 }
             }
@@ -109,7 +158,8 @@ public class JogoBatalhaNaval {
             }
 
             return true;
-        } else {
+        }
+        else {
             // Verifica se há espaço na horizontal
             if (coluna + 2 >= tabuleiro[0].length) {
                 return false;
@@ -143,15 +193,16 @@ public class JogoBatalhaNaval {
     private void jogadaBot() {
         int linha, coluna;
         do {
-            linha = (int) (Math.random() * tabuleiroNavios.length);
-            coluna = (int) (Math.random() * tabuleiroNavios[0].length);
-        } while (tabuleiroVisivel[linha][coluna] == 'X' || tabuleiroVisivel[linha][coluna] == 'O');
+            linha = (int) (Math.random() * tabuleiroNaviosBot.length);
+            coluna = (int) (Math.random() * tabuleiroNaviosBot[0].length);
+        } while (tabuleiroVisivelBot[linha][coluna] == 'X' || tabuleiroVisivelBot[linha][coluna] == 'O');
 
         if (validarJogadaBot(linha, coluna)) {
             naviosAfundadosBot++;
 
         }
     }
+
     private boolean validarJogadaJogador(int linha, int coluna) {
         if (linha < 0 || linha >= tabuleiroNavios.length || coluna < 0 || coluna >= tabuleiroNavios[0].length) {
             System.out.println("Jogada inválida. Tente novamente.");
@@ -164,7 +215,7 @@ public class JogoBatalhaNaval {
         }
 
         if (tabuleiroNavios[linha][coluna] == 'N') {
-            System.out.println("Parabéns "+nomeJogador+"! Você acertou um navio!");
+            System.out.println("Parabéns " + nomeJogador + "! Você acertou um navio!");
             tabuleiroVisivel[linha][coluna] = 'X';
             naviosRestantes--;
             naviosAfundadosJogador++;
@@ -173,36 +224,39 @@ public class JogoBatalhaNaval {
             if (naviosRestantes == 0) {
                 return true; // Jogador ganhou
             }
-        } else {
+        }
+        else {
             System.out.println("Água! Tente novamente.");
             tabuleiroVisivel[linha][coluna] = 'O';
         }
 
         return true;
     }
+
     private boolean validarJogadaBot(int linha, int coluna) {
-        if (linha < 0 || linha >= tabuleiroNavios.length || coluna < 0 || coluna >= tabuleiroNavios[0].length) {
+        if (linha < 0 || linha >= tabuleiroNaviosBot.length || coluna < 0 || coluna >= tabuleiroNaviosBot[0].length) {
             System.out.println("Jogada inválida. Tente novamente.");
             return false;
         }
 
-        if (tabuleiroVisivel[linha][coluna] == 'X' || tabuleiroVisivel[linha][coluna] == 'O') {
+        if (tabuleiroVisivelBot[linha][coluna] == 'X' || tabuleiroVisivelBot[linha][coluna] == 'O') {
             System.out.println("Algum jogador já jogou nesta posição. Tente novamente.");
             return false;
         }
 
-        if (tabuleiroNavios[linha][coluna] == 'N') {
+        if (tabuleiroNaviosBot[linha][coluna] == 'N') {
             System.out.println("O bot acertou um navio");
-            tabuleiroVisivel[linha][coluna] = 'X';
+            tabuleiroVisivelBot[linha][coluna] = 'X';
             naviosRestantes--;
             naviosAfundadosBot++;
 
             if (naviosRestantes == 0) {
                 return true; // Jogador ganhou
             }
-        } else {
+        }
+        else {
             System.out.println("O bot errou a jogada");
-            tabuleiroVisivel[linha][coluna] = 'O';
+            tabuleiroVisivelBot[linha][coluna] = 'O';
         }
 
         return true;
@@ -214,9 +268,11 @@ public class JogoBatalhaNaval {
 
         if (naviosAfundadosJogador > naviosAfundadosBot) {
             System.out.println("Parabéns, " + nomeJogador + "! Você ganhou afundando mais navios.");
-        } else if (naviosAfundadosJogador < naviosAfundadosBot) {
+        }
+        else if (naviosAfundadosJogador < naviosAfundadosBot) {
             System.out.println("Você perdeu! O Bot afundou mais navios.");
-        } else {
+        }
+        else {
             System.out.println("Empate! Ambos afundaram a mesma quantidade de navios.");
         }
 
@@ -241,7 +297,8 @@ public class JogoBatalhaNaval {
                 String[] entry = leaderboard.get(i);
                 System.out.println((i + 1) + ". " + entry[0] + " - Pontuação: " + entry[1]);
             }
-        } else {
+        }
+        else {
             System.out.println("Leaderboard vazio.");
         }
     }
@@ -260,35 +317,25 @@ public class JogoBatalhaNaval {
         return leaderboard;
     }
 
-    private boolean perguntarSeRejogar() {
-        System.out.println("Deseja jogar novamente? (Digite 'sim' para jogar novamente): ");
-        String resposta = scanner.next().toLowerCase();
-        return resposta.equals("sim");
-    }
-
     public void iniciarJogo() {
         exibirTabuleiro(tabuleiroVisivel);
+        exibirTabuleiro(tabuleiroVisivelBot);
 
-        while (naviosRestantes > 0) {
+        while (naviosRestantes > 0 ) {
             jogadaJogador();
             exibirTabuleiro(tabuleiroVisivel);
+            jogadaBot();
+            exibirTabuleiro(tabuleiroVisivelBot);
 
-            if (naviosRestantes > 0) {
-                jogadaBot();
-                exibirTabuleiro(tabuleiroVisivel);
-            }
         }
 
-        scanner.close();
         exibirResultadoFinal();
         exibirLeaderboard();
 
-        if (perguntarSeRejogar()) {
-            reiniciarJogo();
-        } else {
-            System.out.println("Obrigado por jogar!");
-        }
+
+        System.out.println("Obrigado por jogar!");
     }
+
 
     void reiniciarJogo() {
         // Reinicializa os dados para uma nova partida
