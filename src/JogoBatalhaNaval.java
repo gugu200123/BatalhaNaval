@@ -237,7 +237,6 @@ public class JogoBatalhaNaval {
         }
 
         if (tabuleiroVisivelBot[linha][coluna] == 'X' || tabuleiroVisivelBot[linha][coluna] == 'O') {
-            System.out.println("Algum jogador já jogou nesta posição. Tente novamente.");
             return false;
         }
 

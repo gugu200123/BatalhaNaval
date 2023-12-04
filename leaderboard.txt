@@ -8,3 +8,5 @@ g,0
 Gustavo,210
 Gustavo,0
 Gustavo,210
+Gustavo,50
+Gustavo,0
