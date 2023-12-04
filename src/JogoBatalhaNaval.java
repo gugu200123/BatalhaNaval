@@ -196,7 +196,7 @@ public class JogoBatalhaNaval {
         do {
             linha = (int) (Math.random() * tabuleiroNaviosBot.length);
             coluna = (int) (Math.random() * tabuleiroNaviosBot[0].length);
-        } while (tabuleiroVisivelBot[linha][coluna] == 'X' || tabuleiroVisivelBot[linha][coluna] == 'O');
+        } while ((!validarJogadaBot(linha, coluna)));
 
     }
 
