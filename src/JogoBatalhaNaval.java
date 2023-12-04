@@ -6,7 +6,6 @@ import java.util.Scanner;
 public class JogoBatalhaNaval {
     private char[][] tabuleiroNavios;
     private char[][] tabuleiroVisivel;
-    private int tentativas;
     private Scanner scanner;
     private int naviosRestantes;
     private int naviosAfundadosJogador;
@@ -22,7 +21,6 @@ public class JogoBatalhaNaval {
 
         tabuleiroNavios = new char[8][8]; // Tamanho padrão do tabuleiro
         tabuleiroVisivel = new char[8][8];
-        tentativas = 0;
         scanner = new Scanner(System.in);
         naviosRestantes = 0;
         naviosAfundadosJogador = 0;
@@ -140,8 +138,6 @@ public class JogoBatalhaNaval {
             System.out.print("Informe a coluna (0-" + (tabuleiroNavios[0].length - 1) + "): ");
             coluna = scanner.nextInt();
         } while (!validarJogada(linha, coluna));
-
-        tentativas++;
     }
 
     private void jogadaBot() {
@@ -152,7 +148,8 @@ public class JogoBatalhaNaval {
         } while (tabuleiroVisivel[linha][coluna] == 'X' || tabuleiroVisivel[linha][coluna] == 'O');
 
         if (validarJogada(linha, coluna)) {
-            tentativas++;
+            naviosAfundadosBot++;
+
         }
     }
 
@@ -267,11 +264,10 @@ public class JogoBatalhaNaval {
         }
     }
 
-    private void reiniciarJogo() {
+    void reiniciarJogo() {
         // Reinicializa os dados para uma nova partida
         tabuleiroNavios = new char[8][8];
         tabuleiroVisivel = new char[8][8];
-        tentativas = 0;
         naviosRestantes = 0;
         naviosAfundadosJogador = 0;
         naviosAfundadosBot = 0;
@@ -282,15 +278,4 @@ public class JogoBatalhaNaval {
         iniciarJogo(); // Inicia a nova partida
     }
 
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Escolha o nível de dificuldade (1-3): ");
-        int nivelDificuldade = scanner.nextInt();
-
-        // Criando uma instância do jogo com base no nível de dificuldade escolhido
-        JogoBatalhaNaval jogo = new JogoBatalhaNaval(nivelDificuldade);
-
-        // Iniciando o jogo
-        jogo.iniciarJogo();
-    }
 }

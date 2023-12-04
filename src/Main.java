@@ -4,8 +4,8 @@ public class Main {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-
-        while (true) {
+        String resposta = "sim";
+        while (resposta != "não") {
             System.out.println("Escolha o nível de dificuldade (1-3): ");
             int nivelDificuldade = scanner.nextInt();
 
@@ -16,11 +16,13 @@ public class Main {
             jogo.iniciarJogo();
 
             System.out.println("Deseja jogar novamente? (Digite 'sim' para jogar novamente): ");
-            String resposta = scanner.next().toLowerCase();
+            resposta = scanner.next().toLowerCase();
 
-            if (resposta.equals("sim")) {
+            if (resposta.equals("não")) {
                 System.out.println("Obrigado por jogar! Encerrando o programa.");
                 break;
+            }else{
+                jogo.reiniciarJogo();
             }
         }
 
