@@ -284,7 +284,7 @@ public class JogoBatalhaNaval {
         }
     }
 
-    private void exibirLeaderboard() {
+    private void exibirLeaderboard() { // ***********************ORDENAR A LEADERBOARD DE ACORDO COM A PONTUAÇÃO*************
         List<String[]> leaderboard = carregarLeaderboard();
         if (!leaderboard.isEmpty()) {
             System.out.println("Leaderboard:");

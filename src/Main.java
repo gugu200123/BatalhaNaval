@@ -5,7 +5,7 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         String resposta = "sim";
-        System.out.println("Escolha o nível de dificuldade (1-3): ");
+        System.out.println("Escolha o nível de dificuldade (1-5 Quanto maior o numero, mais facil será): "); //********VALIDAR ENTRADA**************
         int nivelDificuldade = scanner.nextInt();
 
         // Criando uma instância do jogo com base no nível de dificuldade escolhido
@@ -29,9 +29,6 @@ public class Main {
                 System.out.println("Resposta Invalida, digite novamente");
             }
         }
-
-
-
 
     }
 }
