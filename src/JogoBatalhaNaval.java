@@ -333,8 +333,10 @@ public class JogoBatalhaNaval {
     }
 
 
-    void reiniciarJogo(int nivelDificuldade) {
+    void reiniciarJogo(int nivelDificuldade) { //****************TEM ALGO QUE IMPEDE DE FUNCIONAR CORRETAMENTE, PROVAVELMENTE AS CONDICIONAIS PARA QUE O CODIGO INICIASR JOGO PARE
         // Reinicializa os dados para uma nova partida
+        System.out.println("Escolha o nível de dificuldade (1-5 Quanto maior o numero, mais facil será): "); //********VALIDAR ENTRADA**************
+        nivelDificuldade = scanner.nextInt();
         tabuleiroNavios = new char[8][8];
         tabuleiroVisivel = new char[8][8];
         tabuleiroNaviosBot = new char[8][8];

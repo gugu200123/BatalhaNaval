@@ -16,7 +16,7 @@ public class Main {
 
         System.out.println("Deseja jogar novamente? (Digite 'sim' para jogar novamente ou 'nao' para sair do jogo.): ");
 
-        while (resposta != "não") {
+        while (!resposta.equals("não")) {
             resposta = scanner.next().toLowerCase();
             if (resposta.equals("nao")) {
                 System.out.println("Obrigado por jogar! Encerrando o programa.");

@@ -12,3 +12,7 @@ Gustavo,50
 Gustavo,0
 Gustavo,440
 Gustavo,330
+william,90
+william,0
+2,330
+2,0
