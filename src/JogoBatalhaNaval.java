@@ -137,7 +137,7 @@ public class JogoBatalhaNaval {
             linha = scanner.nextInt();
             System.out.print("Informe a coluna (0-" + (tabuleiroNavios[0].length - 1) + "): ");
             coluna = scanner.nextInt();
-        } while (!validarJogada(linha, coluna));
+        } while (!validarJogadaJogador(linha, coluna));
     }
 
     private void jogadaBot() {
@@ -147,13 +147,12 @@ public class JogoBatalhaNaval {
             coluna = (int) (Math.random() * tabuleiroNavios[0].length);
         } while (tabuleiroVisivel[linha][coluna] == 'X' || tabuleiroVisivel[linha][coluna] == 'O');
 
-        if (validarJogada(linha, coluna)) {
+        if (validarJogadaBot(linha, coluna)) {
             naviosAfundadosBot++;
 
         }
     }
-
-    private boolean validarJogada(int linha, int coluna) {
+    private boolean validarJogadaJogador(int linha, int coluna) {
         if (linha < 0 || linha >= tabuleiroNavios.length || coluna < 0 || coluna >= tabuleiroNavios[0].length) {
             System.out.println("Jogada inválida. Tente novamente.");
             return false;
@@ -165,7 +164,7 @@ public class JogoBatalhaNaval {
         }
 
         if (tabuleiroNavios[linha][coluna] == 'N') {
-            System.out.println("Parabéns, " + nomeJogador + "! Você acertou um navio!");
+            System.out.println("Parabéns "+nomeJogador+"! Você acertou um navio!");
             tabuleiroVisivel[linha][coluna] = 'X';
             naviosRestantes--;
             naviosAfundadosJogador++;
@@ -176,6 +175,33 @@ public class JogoBatalhaNaval {
             }
         } else {
             System.out.println("Água! Tente novamente.");
+            tabuleiroVisivel[linha][coluna] = 'O';
+        }
+
+        return true;
+    }
+    private boolean validarJogadaBot(int linha, int coluna) {
+        if (linha < 0 || linha >= tabuleiroNavios.length || coluna < 0 || coluna >= tabuleiroNavios[0].length) {
+            System.out.println("Jogada inválida. Tente novamente.");
+            return false;
+        }
+
+        if (tabuleiroVisivel[linha][coluna] == 'X' || tabuleiroVisivel[linha][coluna] == 'O') {
+            System.out.println("Algum jogador já jogou nesta posição. Tente novamente.");
+            return false;
+        }
+
+        if (tabuleiroNavios[linha][coluna] == 'N') {
+            System.out.println("O bot acertou um navio");
+            tabuleiroVisivel[linha][coluna] = 'X';
+            naviosRestantes--;
+            naviosAfundadosBot++;
+
+            if (naviosRestantes == 0) {
+                return true; // Jogador ganhou
+            }
+        } else {
+            System.out.println("O bot errou a jogada");
             tabuleiroVisivel[linha][coluna] = 'O';
         }
 
