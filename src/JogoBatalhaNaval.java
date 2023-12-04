@@ -28,6 +28,7 @@ public class JogoBatalhaNaval {
         tabuleiroVisivelBot = new char[8][8];
         scanner = new Scanner(System.in);
         naviosRestantes = 0;
+        naviosRestantesBot = 0;
         naviosAfundadosJogador = 0;
         naviosAfundadosBot = 0;
         nomeJogador = solicitarNomeJogador(); // Solicitação do nome do jogador
@@ -140,7 +141,7 @@ public class JogoBatalhaNaval {
             }
 
             // Incrementa naviosRestantes (se existir)
-            naviosRestantes += 3; // Cada navio agora tem 3 blocos
+            naviosRestantesBot += 3; // Cada navio agora tem 3 blocos
         }
     }
 
@@ -197,10 +198,6 @@ public class JogoBatalhaNaval {
             coluna = (int) (Math.random() * tabuleiroNaviosBot[0].length);
         } while (tabuleiroVisivelBot[linha][coluna] == 'X' || tabuleiroVisivelBot[linha][coluna] == 'O');
 
-        if (validarJogadaBot(linha, coluna)) {
-            naviosAfundadosBot++;
-
-        }
     }
 
     private boolean validarJogadaJogador(int linha, int coluna) {
@@ -247,11 +244,11 @@ public class JogoBatalhaNaval {
         if (tabuleiroNaviosBot[linha][coluna] == 'N') {
             System.out.println("O bot acertou um navio");
             tabuleiroVisivelBot[linha][coluna] = 'X';
-            naviosRestantes--;
+            naviosRestantesBot--;
             naviosAfundadosBot++;
 
-            if (naviosRestantes == 0) {
-                return true; // Jogador ganhou
+            if (naviosRestantesBot == 0) {
+                return true; // bot ganhou
             }
         }
         else {
@@ -321,7 +318,7 @@ public class JogoBatalhaNaval {
         exibirTabuleiro(tabuleiroVisivel);
         exibirTabuleiro(tabuleiroVisivelBot);
 
-        while (naviosRestantes > 0 ) {
+        while (naviosRestantes > 0 && naviosRestantesBot > 0) {
             jogadaJogador();
             exibirTabuleiro(tabuleiroVisivel);
             jogadaBot();
@@ -337,17 +334,22 @@ public class JogoBatalhaNaval {
     }
 
 
-    void reiniciarJogo() {
+    void reiniciarJogo(int nivelDificuldade) {
         // Reinicializa os dados para uma nova partida
         tabuleiroNavios = new char[8][8];
         tabuleiroVisivel = new char[8][8];
+        tabuleiroNaviosBot = new char[8][8];
+        tabuleiroVisivelBot = new char[8][8];
         naviosRestantes = 0;
+        naviosRestantesBot = 0;
         naviosAfundadosJogador = 0;
         naviosAfundadosBot = 0;
         pontuacaoJogador = 0;
-
+        int quantidadeNavios = nivelDificuldade * 2 + 1;
         inicializarTabuleiros();
-        colocarNavios(tabuleiroNavios, 5); // Defina a quantidade de navios para a nova partida
+        colocarNavios(tabuleiroNavios, quantidadeNavios); // Defina a quantidade de navios para a nova partida
+        inicializarTabuleirosBot();
+        colocarNavios(tabuleiroNaviosBot, quantidadeNavios); // Defina a quantidade de navios para a nova partida
         iniciarJogo(); // Inicia a nova partida
     }
 

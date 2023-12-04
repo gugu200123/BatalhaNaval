@@ -22,7 +22,7 @@ public class Main {
                 System.out.println("Obrigado por jogar! Encerrando o programa.");
                 break;
             }else{
-                jogo.reiniciarJogo();
+                jogo.reiniciarJogo(nivelDificuldade);
             }
         }
 
