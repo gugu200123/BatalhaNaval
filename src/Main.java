@@ -6,19 +6,19 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         String resposta = "sim";
         int nivelDificuldade;
-        System.out.println("*********************************");
-        System.out.println("*SEJA BEM VINDO AO BATALHA NAVAL*");
-        System.out.println("*********************************");
+        System.out.println("********************************");
+        System.out.println("*SEJA BEM VINDO A BATALHA NAVAL*");
+        System.out.println("********************************");
         do {
-            System.out.println("Escolha o nível de dificuldade (1-5 Quanto maior o numero, mais facil será): ");
+            System.out.println("Escolha o nível de dificuldade (1-3 Quanto maior o numero, mais facil será): ");
             while (!scanner.hasNextInt()) {
-                System.out.println("Por favor, digite um número válido entre 1 e 5.");
+                System.out.println("Por favor, digite um número válido entre 1 e 3.");
                 scanner.next(); // Limpa o buffer do scanner
             }
             nivelDificuldade = scanner.nextInt();
 
-            if (nivelDificuldade < 1 || nivelDificuldade > 5) {
-                System.out.println("Por favor, digite um número entre 1 e 5.");
+            if (nivelDificuldade < 1 || nivelDificuldade > 3) {
+                System.out.println("Por favor, digite um número entre 1 e 3.");
             }
         } while (nivelDificuldade < 1 || nivelDificuldade > 5);
         // Criando uma instância do jogo com base no nível de dificuldade escolhido

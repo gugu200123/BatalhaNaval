@@ -337,7 +337,6 @@ public class JogoBatalhaNaval {
         exibirResultadoFinal();
         exibirLeaderboard();
 
-
         System.out.println("Obrigado por jogar!");
     }
 
@@ -346,15 +345,15 @@ public class JogoBatalhaNaval {
         do {
             System.out.println("Escolha o nível de dificuldade (1-5 Quanto maior o numero, mais facil será): ");
             while (!scanner.hasNextInt()) {
-                System.out.println("Por favor, digite um número válido entre 1 e 5.");
+                System.out.println("Por favor, digite um número válido entre 1 e 3.");
                 scanner.next();
             }
             nivelDificuldade = scanner.nextInt();
 
-            if (nivelDificuldade < 1 || nivelDificuldade > 5) {
-                System.out.println("Por favor, digite um número entre 1 e 5.");
+            if (nivelDificuldade < 1 || nivelDificuldade > 3) {
+                System.out.println("Por favor, digite um número entre 1 e 3.");
             }
-        } while (nivelDificuldade < 1 || nivelDificuldade > 5);
+        } while (nivelDificuldade < 1 || nivelDificuldade > 3);
 
         // Reinicializa os tabuleiros e os dados do jogo
         inicializarTabuleiros();
