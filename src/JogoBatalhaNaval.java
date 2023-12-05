@@ -15,6 +15,7 @@ public class JogoBatalhaNaval {
     private int naviosAfundadosBot;
     private String nomeJogador;
     private int pontuacaoJogador;
+    int tentativa;
 
     private static final String ARQUIVO_LEADERBOARD = "leaderboard.txt";
 
@@ -189,6 +190,7 @@ public class JogoBatalhaNaval {
             System.out.print("Informe a coluna (0-" + (tabuleiroNavios[0].length - 1) + "): ");
             coluna = scanner.nextInt();
         } while (!validarJogadaJogador(linha, coluna));
+        tentativa++;
     }
 
     private void jogadaBot() {
@@ -216,7 +218,9 @@ public class JogoBatalhaNaval {
             tabuleiroVisivel[linha][coluna] = 'X';
             naviosRestantes--;
             naviosAfundadosJogador++;
-            pontuacaoJogador += 10; // Incrementa a pontuação por navio atingido
+            int penalidade = tentativa/7;// Pontuação diferente dependendo de qual jogada o navio for acertado
+            pontuacaoJogador += 10-penalidade; // Incrementa a pontuação por navio atingido
+            System.out.println(pontuacaoJogador);
 
             if (naviosRestantes == 0) {
                 return true; // Jogador ganhou
@@ -284,8 +288,9 @@ public class JogoBatalhaNaval {
         }
     }
 
-    private void exibirLeaderboard() { // ***********************ORDENAR A LEADERBOARD DE ACORDO COM A PONTUAÇÃO*************
+    private void exibirLeaderboard() {
         List<String[]> leaderboard = carregarLeaderboard();
+        leaderboard = ordenarPorPontuacao(leaderboard);
         if (!leaderboard.isEmpty()) {
             System.out.println("Leaderboard:");
 
@@ -312,6 +317,10 @@ public class JogoBatalhaNaval {
         }
         return leaderboard;
     }
+    private List<String[]> ordenarPorPontuacao(List<String[]> leaderboard) {
+        leaderboard.sort((a, b) -> Integer.compare(Integer.parseInt(b[1]), Integer.parseInt(a[1])));
+        return leaderboard;
+    }
 
     public void iniciarJogo() {
         exibirTabuleiro(tabuleiroVisivel);
@@ -333,25 +342,38 @@ public class JogoBatalhaNaval {
     }
 
 
-    void reiniciarJogo(int nivelDificuldade) { //****************TEM ALGO QUE IMPEDE DE FUNCIONAR CORRETAMENTE, PROVAVELMENTE AS CONDICIONAIS PARA QUE O CODIGO INICIASR JOGO PARE
-        // Reinicializa os dados para uma nova partida
-        System.out.println("Escolha o nível de dificuldade (1-5 Quanto maior o numero, mais facil será): "); //********VALIDAR ENTRADA**************
-        nivelDificuldade = scanner.nextInt();
-        tabuleiroNavios = new char[8][8];
-        tabuleiroVisivel = new char[8][8];
-        tabuleiroNaviosBot = new char[8][8];
-        tabuleiroVisivelBot = new char[8][8];
+    void reiniciarJogo(int nivelDificuldade) {
+        do {
+            System.out.println("Escolha o nível de dificuldade (1-5 Quanto maior o numero, mais facil será): ");
+            while (!scanner.hasNextInt()) {
+                System.out.println("Por favor, digite um número válido entre 1 e 5.");
+                scanner.next();
+            }
+            nivelDificuldade = scanner.nextInt();
+
+            if (nivelDificuldade < 1 || nivelDificuldade > 5) {
+                System.out.println("Por favor, digite um número entre 1 e 5.");
+            }
+        } while (nivelDificuldade < 1 || nivelDificuldade > 5);
+
+        // Reinicializa os tabuleiros e os dados do jogo
+        inicializarTabuleiros();
+        inicializarTabuleirosBot();
         naviosRestantes = 0;
         naviosRestantesBot = 0;
         naviosAfundadosJogador = 0;
         naviosAfundadosBot = 0;
         pontuacaoJogador = 0;
+
+        // Define a quantidade de navios para a nova partida
         int quantidadeNavios = nivelDificuldade * 2 + 1;
-        inicializarTabuleiros();
-        colocarNavios(tabuleiroNavios, quantidadeNavios); // Defina a quantidade de navios para a nova partida
-        inicializarTabuleirosBot();
-        colocarNavios(tabuleiroNaviosBot, quantidadeNavios); // Defina a quantidade de navios para a nova partida
-        iniciarJogo(); // Inicia a nova partida
+
+        // Coloca navios nos tabuleiros separadamente
+        colocarNavios(tabuleiroNavios, quantidadeNavios);
+        colocarNaviosBot(tabuleiroNaviosBot, quantidadeNavios);
+
+        // Inicia a nova partida
+        iniciarJogo();
     }
 
 }
