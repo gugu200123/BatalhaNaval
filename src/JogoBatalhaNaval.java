@@ -118,6 +118,7 @@ public class JogoBatalhaNaval {
             naviosRestantes += 3; // Cada navio agora tem 3 blocos
         }
     }
+
     private void colocarNaviosBot(char[][] tabuleiro, int quantidadeNavios) {
         for (int i = 0; i < quantidadeNavios; i++) {
             int linha, coluna;
